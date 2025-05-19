@@ -1,0 +1,1005 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sopa de Letras: Nuestro Corregimiento</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #3a7bd5, #2e8b57);
+            color: #333;
+            margin: 0;
+            padding: 10px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            max-width: 900px;
+            width: 95%;
+            margin-top: 10px;
+        }
+
+        h1 {
+            color: #fff;
+            text-align: center;
+            font-size: 1.8rem;
+            margin: 10px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        .game-area {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .board-container {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .word-list-container {
+            flex: 1;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .letter-grid {
+            display: grid;
+            grid-template-columns: repeat(15, 1fr);
+            gap: 1px;
+            margin-bottom: 15px;
+            width: 100%;
+            touch-action: manipulation; /* Mejora la respuesta táctil */
+        }
+
+        .letter-cell {
+            width: 100%;
+            aspect-ratio: 1/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #e0f7fa;
+            font-weight: bold;
+            font-size: 3.5vw; /* Tamaño responsivo */
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+            touch-action: manipulation;
+        }
+
+        .letter-cell:hover {
+            background-color: #b2ebf2;
+            transform: scale(1.05);
+        }
+
+        .letter-cell.selected {
+            background-color: #4db6ac;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .letter-cell.found {
+            background-color: #81c784;
+            color: white;
+            animation: celebrate 1s;
+        }
+
+        .word-list {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .word-item {
+            background-color: #e0e0e0;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .word-item.found {
+            background-color: #81c784;
+            color: white;
+            text-decoration: line-through;
+            animation: scaleUp 0.5s;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            background-color: #f1f8e9;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .timer, .score, .remaining {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stats-label {
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: #558b2f;
+        }
+
+        .stats-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+            font-size: 0.9rem;
+        }
+
+        button:hover {
+            background-color: #388e3c;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        button.hint {
+            background-color: #ff9800;
+        }
+
+        button.hint:hover {
+            background-color: #f57c00;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f0f;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 10;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: modalAppear 0.5s;
+        }
+
+        .modal h2 {
+            color: #2e7d32;
+            margin-top: 0;
+            font-size: 1.5rem;
+        }
+
+        .modal p {
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .message-box {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4caf50;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 5;
+            pointer-events: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .message-box.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-10px);
+        }
+
+        .info-box {
+            background-color: #e8f5e9;
+            border-left: 5px solid #4caf50;
+            padding: 8px 12px;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+            border-radius: 5px;
+            animation: fadeIn 1s;
+        }
+
+        /* Media queries para diferentes tamaños de pantalla */
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .game-area {
+                flex-direction: row;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .letter-cell {
+                font-size: 1rem; /* Tamaño fijo para pantallas más grandes */
+            }
+            
+            .word-item {
+                font-size: 0.9rem;
+                padding: 8px 12px;
+            }
+            
+            .stats-label {
+                font-size: 0.8rem;
+            }
+            
+            .stats-value {
+                font-size: 1.5rem;
+            }
+            
+            button {
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Para pantallas muy pequeñas */
+        @media (max-width: 350px) {
+            .letter-grid {
+                grid-template-columns: repeat(15, 1fr);
+                gap: 0px;
+            }
+            
+            .letter-cell {
+                font-size: 3.2vw;
+                border-radius: 2px;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+            }
+            
+            button {
+                width: 100%;
+            }
+        }
+
+        /* Para dispositivos medianos */
+        @media (min-width: 480px) and (max-width: 767px) {
+            .letter-cell {
+                font-size: 2.8vw;
+            }
+        }
+
+        /* Animaciones */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        @keyframes celebrate {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2) rotate(5deg); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes scaleUp {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes modalAppear {
+            0% { transform: scale(0.7); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <h1>Sopa de Letras: Nuestro Corregimiento</h1>
+    
+    <div class="container">
+        <div class="info-box">
+            Este juego contiene palabras relacionadas con el patrimonio cultural, histórico y natural de nuestro corregimiento. ¡Encuéntralas todas para descubrir la riqueza de nuestra tierra!
+        </div>
+        
+        <div class="game-area">
+            <div class="board-container">
+                <div class="letter-grid" id="letterGrid"></div>
+                
+                <div class="stats">
+                    <div class="timer">
+                        <span class="stats-label">TIEMPO</span>
+                        <span class="stats-value" id="time">00:00</span>
+                    </div>
+                    <div class="score">
+                        <span class="stats-label">PUNTOS</span>
+                        <span class="stats-value" id="score">0</span>
+                    </div>
+                    <div class="remaining">
+                        <span class="stats-label">RESTANTES</span>
+                        <span class="stats-value" id="remaining">0</span>
+                    </div>
+                </div>
+                
+                <div class="controls">
+                    <button id="newGame">Nuevo Juego</button>
+                    <button id="hintBtn" class="hint">Pista</button>
+                </div>
+            </div>
+            
+            <div class="word-list-container">
+                <h3>Palabras a encontrar:</h3>
+                <ul class="word-list" id="wordList"></ul>
+            </div>
+        </div>
+    </div>
+    
+    <div id="messageBox" class="message-box"></div>
+    
+    <div id="completionModal" class="modal">
+        <div class="modal-content">
+            <h2>¡Felicidades!</h2>
+            <p>Has completado la sopa de letras en <span id="finalTime"></span>.</p>
+            <p>Tu puntuación final: <span id="finalScore"></span> puntos</p>
+            <button id="playAgain">Jugar de nuevo</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Palabras relacionadas con el corregimiento (ejemplo)
+            const words = ["HISTORIA", "PATRIMONIO", "CULTURA", "TRADICION", 
+                           "COMUNIDAD", "ARTESANIA", "FESTIVAL", "MUSICA", 
+                           "NATURALEZA", "ECOLOGIA", "BIODIVERSIDAD", "TURISMO",
+                           "DESARROLLO", "ANCESTRAL"];
+            
+            const board = {
+                size: 15,
+                grid: [],
+                selectedCells: [],
+                foundWords: [],
+                hints: 3,
+                timeStarted: null,
+                timer: null,
+                score: 0
+            };
+            
+            // Elementos del DOM
+            const letterGrid = document.getElementById('letterGrid');
+            const wordList = document.getElementById('wordList');
+            const timeDisplay = document.getElementById('time');
+            const scoreDisplay = document.getElementById('score');
+            const remainingDisplay = document.getElementById('remaining');
+            const newGameBtn = document.getElementById('newGame');
+            const hintBtn = document.getElementById('hintBtn');
+            const messageBox = document.getElementById('messageBox');
+            const completionModal = document.getElementById('completionModal');
+            const finalTimeSpan = document.getElementById('finalTime');
+            const finalScoreSpan = document.getElementById('finalScore');
+            const playAgainBtn = document.getElementById('playAgain');
+            
+            // Iniciar juego
+            initGame();
+            
+            // Event Listeners
+            newGameBtn.addEventListener('click', initGame);
+            hintBtn.addEventListener('click', giveHint);
+            playAgainBtn.addEventListener('click', function() {
+                completionModal.style.display = 'none';
+                initGame();
+            });
+            
+            // Función para inicializar el juego
+            function initGame() {
+                // Reinicio de variables
+                board.grid = [];
+                board.selectedCells = [];
+                board.foundWords = [];
+                board.score = 0;
+                board.hints = 3;
+                
+                // Crear la cuadrícula
+                createEmptyGrid();
+                
+                // Colocar palabras en la cuadrícula
+                placeWords();
+                
+                // Llenar espacios vacíos con letras aleatorias
+                fillEmptySpaces();
+                
+                // Renderizar la cuadrícula
+                renderGrid();
+                
+                // Renderizar la lista de palabras
+                renderWordList();
+                
+                // Actualizar contadores
+                updateCounters();
+                
+                // Iniciar temporizador
+                if (board.timer) {
+                    clearInterval(board.timer);
+                }
+                board.timeStarted = Date.now();
+                board.timer = setInterval(updateTimer, 1000);
+                
+                // Actualizar hint button text
+                hintBtn.textContent = `Pista (${board.hints})`;
+            }
+            
+            // Crear una cuadrícula vacía
+            function createEmptyGrid() {
+                for (let i = 0; i < board.size; i++) {
+                    board.grid[i] = [];
+                    for (let j = 0; j < board.size; j++) {
+                        board.grid[i][j] = '';
+                    }
+                }
+            }
+            
+            // Colocar palabras en la cuadrícula
+            function placeWords() {
+                const directions = [
+                    [0, 1],   // horizontal derecha
+                    [1, 0],   // vertical abajo
+                    [1, 1],   // diagonal derecha abajo
+                    [0, -1],  // horizontal izquierda
+                    [-1, 0],  // vertical arriba
+                    [-1, -1], // diagonal izquierda arriba
+                    [1, -1],  // diagonal derecha arriba
+                    [-1, 1]   // diagonal izquierda abajo
+                ];
+                
+                // Ordenar palabras por longitud (más largas primero)
+                const shuffledWords = [...words].sort((a, b) => b.length - a.length);
+                
+                shuffledWords.forEach(word => {
+                    let placed = false;
+                    let attempts = 0;
+                    
+                    while (!placed && attempts < 100) {
+                        // Elegir dirección aleatoria
+                        const dirIndex = Math.floor(Math.random() * directions.length);
+                        const [dx, dy] = directions[dirIndex];
+                        
+                        // Elegir posición inicial aleatoria
+                        const startX = Math.floor(Math.random() * board.size);
+                        const startY = Math.floor(Math.random() * board.size);
+                        
+                        // Verificar si la palabra cabe en esa dirección
+                        if (wordFits(word, startX, startY, dx, dy)) {
+                            // Colocar la palabra
+                            for (let i = 0; i < word.length; i++) {
+                                const x = startX + i * dx;
+                                const y = startY + i * dy;
+                                board.grid[y][x] = word.charAt(i);
+                            }
+                            placed = true;
+                        }
+                        
+                        attempts++;
+                    }
+                });
+            }
+            
+            // Verificar si una palabra cabe en una dirección dada
+            function wordFits(word, startX, startY, dx, dy) {
+                // Verificar límites
+                const endX = startX + (word.length - 1) * dx;
+                const endY = startY + (word.length - 1) * dy;
+                
+                if (endX < 0 || endX >= board.size || endY < 0 || endY >= board.size) {
+                    return false;
+                }
+                
+                // Verificar colisiones
+                for (let i = 0; i < word.length; i++) {
+                    const x = startX + i * dx;
+                    const y = startY + i * dy;
+                    
+                    const currentChar = board.grid[y][x];
+                    if (currentChar !== '' && currentChar !== word.charAt(i)) {
+                        return false;
+                    }
+                }
+                
+                return true;
+            }
+            
+            // Llenar espacios vacíos con letras aleatorias
+            function fillEmptySpaces() {
+                const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                
+                for (let y = 0; y < board.size; y++) {
+                    for (let x = 0; x < board.size; x++) {
+                        if (board.grid[y][x] === '') {
+                            const randomIndex = Math.floor(Math.random() * letters.length);
+                            board.grid[y][x] = letters.charAt(randomIndex);
+                        }
+                    }
+                }
+            }
+            
+            // Renderizar la cuadrícula
+            function renderGrid() {
+                letterGrid.innerHTML = '';
+                
+                for (let y = 0; y < board.size; y++) {
+                    for (let x = 0; x < board.size; x++) {
+                        const cell = document.createElement('div');
+                        cell.className = 'letter-cell';
+                        cell.textContent = board.grid[y][x];
+                        cell.dataset.x = x;
+                        cell.dataset.y = y;
+                        
+                        // Agregar event listeners para dispositivos táctiles y mouse
+                        cell.addEventListener('mousedown', startSelection);
+                        cell.addEventListener('mouseover', continueSelection);
+                        cell.addEventListener('touchstart', handleTouchStart, {passive: true});
+                        cell.addEventListener('touchmove', handleTouchMove, {passive: false});
+                        
+                        letterGrid.appendChild(cell);
+                    }
+                }
+                
+                // Agregar event listeners para finalizar la selección
+                document.addEventListener('mouseup', endSelection);
+                document.addEventListener('touchend', endSelection);
+            }
+            
+            // Renderizar la lista de palabras
+            function renderWordList() {
+                wordList.innerHTML = '';
+                
+                words.forEach(word => {
+                    const li = document.createElement('li');
+                    li.className = 'word-item';
+                    li.textContent = word;
+                    li.dataset.word = word;
+                    
+                    if (board.foundWords.includes(word)) {
+                        li.classList.add('found');
+                    }
+                    
+                    wordList.appendChild(li);
+                });
+            }
+            
+            // Manejo de eventos táctiles
+            function handleTouchStart(e) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const element = document.elementFromPoint(touch.clientX, touch.clientY);
+                
+                if (element && element.classList.contains('letter-cell')) {
+                    startSelection.call(element, e);
+                }
+            }
+            
+            function handleTouchMove(e) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const element = document.elementFromPoint(touch.clientX, touch.clientY);
+                
+                if (element && element.classList.contains('letter-cell')) {
+                    continueSelection.call(element, e);
+                }
+            }
+            
+            // Iniciar selección
+            function startSelection(e) {
+                const x = parseInt(this.dataset.x);
+                const y = parseInt(this.dataset.y);
+                
+                board.selectedCells = [{x, y}];
+                updateSelectedCells();
+            }
+            
+            // Continuar selección
+            function continueSelection(e) {
+                if (board.selectedCells.length === 0) return;
+                
+                const x = parseInt(this.dataset.x);
+                const y = parseInt(this.dataset.y);
+                
+                // Verificar si ya está seleccionada
+                const alreadySelected = board.selectedCells.some(cell => cell.x === x && cell.y === y);
+                if (alreadySelected) return;
+                
+                // Verificar si es adyacente a la última celda seleccionada
+                const lastCell = board.selectedCells[board.selectedCells.length - 1];
+                const dx = x - lastCell.x;
+                const dy = y - lastCell.y;
+                
+                // Solo permitir selecciones en línea recta
+                if (board.selectedCells.length > 1) {
+                    const prevCell = board.selectedCells[board.selectedCells.length - 2];
+                    const prevDx = lastCell.x - prevCell.x;
+                    const prevDy = lastCell.y - prevCell.y;
+                    
+                    // Verificar si mantiene la misma dirección
+                    if (Math.sign(dx) !== Math.sign(prevDx) || Math.sign(dy) !== Math.sign(prevDy)) {
+                        return;
+                    }
+                    
+                    // Verificar proporción
+                    if (dx !== 0 && dy !== 0) {
+                        const ratio = Math.abs(dx) / Math.abs(dy);
+                        if (ratio !== 1) return;
+                    }
+                }
+                
+                // Añadir celda a la selección
+                board.selectedCells.push({x, y});
+                updateSelectedCells();
+            }
+            
+            // Finalizar selección
+            function endSelection() {
+                if (board.selectedCells.length === 0) return;
+                
+                // Obtener la palabra seleccionada
+                let word = '';
+                board.selectedCells.forEach(cell => {
+                    word += board.grid[cell.y][cell.x];
+                });
+                
+                // Verificar si la palabra está en la lista
+                if (words.includes(word)) {
+                    if (!board.foundWords.includes(word)) {
+                        foundWord(word);
+                    }
+                } else {
+                    // Verificar palabra en reversa
+                    const reversedWord = word.split('').reverse().join('');
+                    if (words.includes(reversedWord) && !board.foundWords.includes(reversedWord)) {
+                        foundWord(reversedWord);
+                    }
+                }
+                
+                // Limpiar selección
+                board.selectedCells = [];
+                updateSelectedCells();
+            }
+            
+            // Actualizar visualización de celdas seleccionadas
+            function updateSelectedCells() {
+                // Reiniciar todas las celdas
+                const allCells = document.querySelectorAll('.letter-cell');
+                allCells.forEach(cell => {
+                    if (!cell.classList.contains('found')) {
+                        cell.classList.remove('selected');
+                    }
+                });
+                
+                // Marcar celdas seleccionadas
+                board.selectedCells.forEach(({x, y}) => {
+                    const index = y * board.size + x;
+                    const cell = allCells[index];
+                    if (cell && !cell.classList.contains('found')) {
+                        cell.classList.add('selected');
+                    }
+                });
+            }
+            
+            // Marcar palabra encontrada
+            function foundWord(word) {
+                // Añadir a la lista de palabras encontradas
+                board.foundWords.push(word);
+                
+                // Marcar celdas como encontradas
+                board.selectedCells.forEach(({x, y}) => {
+                    const index = y * board.size + x;
+                    const cell = document.querySelectorAll('.letter-cell')[index];
+                    cell.classList.add('found');
+                });
+                
+                // Marcar palabra en la lista
+                const wordItem = document.querySelector(`.word-item[data-word="${word}"]`);
+                wordItem.classList.add('found');
+                
+                // Calcular puntos (10 puntos por letra)
+                const points = word.length * 10;
+                board.score += points;
+                
+                // Mostrar mensaje
+                showMessage(`¡Encontraste "${word}"! +${points} puntos`);
+                
+                // Actualizar contadores
+                updateCounters();
+                
+                // Verificar si se completó el juego
+                if (board.foundWords.length === words.length) {
+                    gameCompleted();
+                }
+                
+                // Efecto de celebración
+                createConfetti();
+            }
+            
+            // Dar una pista
+            function giveHint() {
+                if (board.hints <= 0) {
+                    showMessage("¡Ya no tienes pistas disponibles!");
+                    return;
+                }
+                
+                // Encontrar una palabra no descubierta
+                const remainingWords = words.filter(word => !board.foundWords.includes(word));
+                if (remainingWords.length === 0) return;
+                
+                // Seleccionar una palabra aleatoria
+                const randomWord = remainingWords[Math.floor(Math.random() * remainingWords.length)];
+                
+                // Resaltar temporalmente una letra de la palabra
+                highlightRandomLetter(randomWord);
+                
+                // Reducir contador de pistas
+                board.hints--;
+                hintBtn.textContent = `Pista (${board.hints})`;
+                
+                // Restar puntos por usar pista
+                board.score -= 15;
+                if (board.score < 0) board.score = 0;
+                updateCounters();
+                
+                showMessage(`Pista: ¡Busca la palabra "${randomWord}"! -15 puntos`);
+            }
+            
+            // Resaltar una letra aleatoria de la palabra
+            function highlightRandomLetter(word) {
+                // Buscar la palabra en la cuadrícula
+                for (let y = 0; y < board.size; y++) {
+                    for (let x = 0; x < board.size; x++) {
+                        // Verificar todas las direcciones
+                        const directions = [
+                            [0, 1], [1, 0], [1, 1], [0, -1], 
+                            [-1, 0], [-1, -1], [1, -1], [-1, 1]
+                        ];
+                        
+                        directions.forEach(([dx, dy]) => {
+                            let found = true;
+                            
+                            // Verificar si la palabra cabe en esta dirección
+                            for (let i = 0; i < word.length; i++) {
+                                const newX = x + i * dx;
+                                const newY = y + i * dy;
+                                
+                                if (newX < 0 || newX >= board.size || 
+                                    newY < 0 || newY >= board.size || 
+                                    board.grid[newY][newX] !== word.charAt(i)) {
+                                    found = false;
+                                    break;
+                                }
+                            }
+                            
+                            if (found) {
+                                // Elegir una posición aleatoria en la palabra
+                                const randomPos = Math.floor(Math.random() * word.length);
+                                const hintX = x + randomPos * dx;
+                                const hintY = y + randomPos * dy;
+                                
+                                // Destacar la celda
+                                const index = hintY * board.size + hintX;
+                                const cell = document.querySelectorAll('.letter-cell')[index];
+                                
+                                // Efecto de destello
+                                cell.style.backgroundColor = '#ffeb3b';
+                                cell.style.transform = 'scale(1.2)';
+                                
+                                setTimeout(() => {
+                                    cell.style.backgroundColor = '';
+                                    cell.style.transform = '';
+                                }, 1500);
+                            }
+                        });
+                    }
+                }
+            }
+            
+            // Actualizar contadores
+            function updateCounters() {
+                scoreDisplay.textContent = board.score;
+                remainingDisplay.textContent = words.length - board.foundWords.length;
+            }
+            
+            // Actualizar temporizador
+            function updateTimer() {
+                const elapsed = Math.floor((Date.now() - board.timeStarted) / 1000);
+                const minutes = Math.floor(elapsed / 60).toString().padStart(2, '0');
+                const seconds = (elapsed % 60).toString().padStart(2, '0');
+                timeDisplay.textContent = `${minutes}:${seconds}`;
+            }
+            
+            // Mostrar mensaje temporal
+            function showMessage(text) {
+                messageBox.textContent = text;
+                messageBox.classList.add('show');
+                
+                setTimeout(() => {
+                    messageBox.classList.remove('show');
+                }, 2000);
+            }
+            
+            // Crear efecto de confeti
+            function createConfetti() {
+                const container = document.querySelector('body');
+                
+                for (let i = 0; i < 30; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    
+                    // Color aleatorio
+                    const colors = ['#f94144', '#f3722c', '#f8961e', '#f9c74f', '#90be6d', '#43aa8b', '#577590'];
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.backgroundColor = color;
+                    
+                    // Posición aleatoria
+                    const startX = Math.random() * window.innerWidth;
+                    const startY = -20;
+                    confetti.style.left = `${startX}px`;
+                    confetti.style.top = `${startY}px`;
+                    
+                    // Tamaño aleatorio
+                    const size = Math.random() * 8 + 5;
+                    confetti.style.width = `${size}px`;
+                    confetti.style.height = `${size}px`;
+                    
+                    // Animación
+                    confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
+                    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    
+                    // Añadir al DOM
+                    container.appendChild(confetti);
+                    
+                    // Eliminar después de la animación
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 5000);
+                }
+                
+                // CSS para la animación de caída
+                if (!document.getElementById('confettiStyle')) {
+                    const style = document.createElement('style');
+                    style.id = 'confettiStyle';
+                    style.textContent = `
+                        @keyframes fall {
+                            0% { transform: translateY(0) rotate(0); opacity: 1; }
+                            100% { transform: translateY(${window.innerHeight}px) rotate(360deg); opacity: 0; }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+            }
+            
+            // Juego completado
+            function gameCompleted() {
+                clearInterval(board.timer);
+                
+                // Obtener tiempo final
+                const elapsed = Math.floor((Date.now() - board.timeStarted) / 1000);
+                const minutes = Math.floor(elapsed / 60).toString().padStart(2, '0');
+                const seconds = (elapsed % 60).toString().padStart(2, '0');
+                
+                // Bonificación por tiempo
+                let timeBonus = 0;
+                if (elapsed < 300) { // Menos de 5 minutos
+                    timeBonus = 500;
+                } else if (elapsed < 600) { // Menos de 10 minutos
+                    timeBonus = 250;
+                }
+                
+                if (timeBonus > 0) {
+                    board.score += timeBonus;
+                    showMessage(`¡Bonificación por tiempo! +${timeBonus} puntos`);
+                }
+                
+                // Actualizar modal de finalización
+                finalTimeSpan.textContent = `${minutes}:${seconds}`;
+                finalScoreSpan.textContent = board.score;
+                
+                // Mostrar modal
+                setTimeout(() => {
+                    completionModal.style.display = 'flex';
+                }, 1500);
+                
+                // Gran celebración
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(() => {
+                        createConfetti();
+                    }, i * 300);
+                }
+            }
+            
+           
+            
+            // Función para asegurar que la cuadrícula sea cuadrada
+            function ensureSquareGrid() {
+                const cells = document.querySelectorAll('.letter-cell');
+                if (cells.length === 0) return;
+                
+                // Asegurar que las celdas sean cuadradas
+                cells.forEach(cell => {
+                    const width = cell.offsetWidth;
+                    cell.style.height = `${width}px`;
+                });
+            }
+            
+            // Llamar a esta función cuando se carga la página y cuando se redimensiona
+            window.addEventListener('resize', ensureSquareGrid);
+            setTimeout(ensureSquareGrid, 100); // También llamar después de un breve retraso para asegurar que todo esté cargado
+        });
+    </script>

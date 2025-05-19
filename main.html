@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bonda - Santa Marta | Tierra de Historia y Tradiciones</title>
+   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="cultura.css">
+    <link rel="stylesheet" href="inicio.css">
+    <link rel="stylesheet" href="historia.css">
+    <style>
+
+        @media screen and (max-width: 768px) {
+            nav-links li a {
+                 color: black;
+            }
+}
+
+
+    </style>
+</head>
+<body>
+    <header>
+        <nav id="main-nav">
+            <div class="logo">
+                <img src="img/escudo.jpeg" alt="Logo Bonda">
+                <span>Santa Marta</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#inicio" class="active">Inicio</a></li>
+                <li><a href="#historia">Historia</a></li>
+                <li><a href="#lugares">Lugares</a></li>
+                <li><a href="#cultura">Cultura</a></li>
+                <li><a href="#gastronomia">Gastronomía</a></li>
+                <li><a href="#himno">Himno</a></li>
+                <li><a href="#juegos">Juegos</a></li>
+            </ul>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+     <section id="hero" class="hero-section">
+    <div class="hero-video-container">
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="img/bonda.mp4" type="video/mp4">
+            
+            <!-- Fallback para navegadores que no soportan video -->
+            Tu navegador no soporta videos HTML5.
+        </video>
+        <div class="hero-overlay"></div>
+    </div>
+    
+    <div class="hero-content">
+        <h1>Bonda, Santa Marta</h1>
+        <p>El pueblo más antiguo de Colombia, donde la historia y la naturaleza se entrelazan</p>
+        <a href="#historia" class="btn-primary">Descubrir Bonda</a>
+    </div>
+</section>
+
+
+
+        <!-- Parte HTML modificada para el efecto de escritura automática -->
+<section id="inicio" class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Bienvenidos a Bonda</h2>
+            <div class="section-divider"></div>
+        </div>
+        <div class="card-container">
+            <div class="feature-card">
+                <div class="icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3>Ubicación Privilegiada</h3>
+                <p>A solo 15 minutos de Santa Marta, en las faldas de la Sierra Nevada</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">
+                    <i class="fas fa-history"></i>
+                </div>
+                <h3>Rico Patrimonio</h3>
+                <p>Más de 2000 años de historia y tradiciones ancestrales</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <h3>Naturaleza Exuberante</h3>
+                <p>Cascadas, ríos y paisajes que maravillan a los visitantes</p>
+            </div>
+        </div>
+        
+        <div class="intro-section animate-on-scroll">
+            <div class="intro-content">
+                <div class="intro-text">
+                    <!-- Modificado para el efecto typewriter -->
+                    <h2 class="intro-title" id="bondaTitulo">Bonda: Tesoro Ancestral</h2>
+                    <div class="intro-divider"></div>
+                    <p>Ubicado en las faldas de la Sierra Nevada de Santa Marta, Bonda es un pequeño y encantador pueblo que conserva la esencia de sus raíces indígenas. A solo 15 minutos de Santa Marta, este destino ofrece una combinación perfecta de historia, naturaleza y cultura.</p>
+                    <p>Bonda fue uno de los principales asentamientos de los indígenas Tayrona, y hoy en día conserva parte de su legado en su arquitectura, tradiciones y en el espíritu de su gente.</p>
+                    <div class="intro-features">
+                        <div class="feature">
+                            <span class="feature-icon">🏞️</span>
+                            <span class="feature-text">Naturaleza</span>
+                        </div>
+                        <div class="feature">
+                            <span class="feature-icon">🏛️</span>
+                            <span class="feature-text">Historia</span>
+                        </div>
+                        <div class="feature">
+                            <span class="feature-icon">🎭</span>
+                            <span class="feature-text">Cultura</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="intro-media">
+                    <div class="main-image">
+                        <img src="img/naturaleza.jpeg" alt="Vista panorámica de Bonda">
+                        <div class="image-caption">Sierra Nevada de Santa Marta</div>
+                    </div>
+                    <div class="image-decorations">
+                        <div class="decoration-circle"></div>
+                        <div class="decoration-line"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+        <!-- Historia -->
+        <section id="historia" class="section section-alt">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Historia de Bonda</h2>
+                    <div class="section-divider"></div>
+                </div>
+                
+                <div class="tabs-container">
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="origenes">Orígenes</button>
+                        <button class="tab-btn" data-tab="colonial">Época Colonial</button>
+                        <button class="tab-btn" data-tab="siglos">Siglos XIX-XX</button>
+                        <button class="tab-btn" data-tab="actualidad">Actualidad</button>
+                    </div>
+                    
+                    <div class="tab-content active" id="origenes">
+                        <div class="tab-flex">
+                            <div class="tab-text">
+                                <h3>Orígenes Ancestrales</h3>
+                                <p>Bonda es considerado uno de los pueblos más antiguos de Santa Marta, Fue fundado por los indígenas Tayronas mucho antes de la llegada de los españoles, Y su historia se remonta a más de 2000 años. </p>
+                                <p>El nombre "Bonda" proviene del cacique que gobernaba la región cuando llegaron los conquistadores españoles. Los bondas eran una tribu guerrera que resistió ferozmente la invasión española durante años.</p>
+                                <p>La comunidad indígena Bonda tenía un sistema social complejo, con divisiones jerárquicas y especializaciones en diferentes artes y oficios. Su cosmovisión estaba profundamente conectada con la naturaleza y los astros.</p>
+                            </div>
+                            <div class="tab-media">
+                                <img src="img/indios-tairona.jpeg" alt="Representación de indígenas Tayrona">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="colonial">
+                        <div class="tab-flex">
+                            <div class="tab-media">
+                                <img src="img/epoca-colonial.jpg" alt="Bonda en la época colonial">
+                            </div>
+                            <div class="tab-text">
+                                <h3>Época Colonial</h3>
+                                <p>En la época colonial, Bonda se convirtió en un punto importante para el comercio entre los indígenas de la Sierra Nevada y los colonos españoles.</p>
+                                <p>Durante este período, los españoles construyeron la Iglesia de San Jerónimo, una de las más antiguas de Colombia. También establecieron el Puente de los Españoles, crucial para las rutas comerciales de la época.</p>
+                                <p>A pesar de la imposición cultural y religiosa española, muchas tradiciones indígenas lograron sobrevivir, creando una rica mezcla cultural que perdura hasta nuestros días.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="siglos">
+                        <div class="tab-flex">
+                            <div class="tab-text">
+                                <h3>Siglos XIX - XX</h3>
+                                <p>Durante el siglo XIX, tras la independencia de Colombia, Bonda experimentó transformaciones significativas en su estructura social y económica.</p>
+                                <p>El pueblo participó en las guerras civiles que sacudieron a Colombia, y sufrió períodos de auge y declive económico relacionados con los ciclos de producción agrícola, especialmente del café y el banano.</p>
+                                <p>En el siglo XX, el turismo comenzó a tomar importancia como actividad económica, gracias a la proximidad de Bonda con Santa Marta y sus atractivos naturales.</p>
+                            </div>
+                            <div class="tab-media">
+                                <img src="img/sigloxix.jpg" alt="Bonda en el siglo XX">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="actualidad">
+                        <div class="tab-flex">
+                            <div class="tab-media">
+                                <img src="img/bonda-actualidad.jpg" alt="Bonda en la actualidad">
+                            </div>
+                            <div class="tab-text">
+                                <h3>Actualidad</h3>
+                                <p>Hoy en día, Bonda se ha convertido en un destino turístico importante en la región del Magdalena, atrayendo a visitantes interesados en su historia, cultura y bellezas naturales.</p>
+                                <p>La comunidad local trabaja activamente en la preservación de su patrimonio cultural y natural, impulsando iniciativas de turismo sostenible y educación ambiental.</p>
+                                <p>A pesar del desarrollo moderno, Bonda mantiene la esencia de pueblo tradicional colombiano, donde el ritmo de vida sigue siendo tranquilo y acogedor.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline">
+                    <h3>Línea del Tiempo</h3>
+                    <div class="timeline-container" id="timeline-container">
+                        <!-- La línea del tiempo se generará con JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lugares Históricos -->
+        <section id="lugares" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Lugares Históricos</h2>
+                    <div class="section-divider"></div>
+                </div>
+                
+                <div class="lugares-carousel" id="lugares-carousel">
+                    <!-- El carrusel de lugares se generará con JavaScript -->
+                </div>
+                
+                <div class="lugares-info" id="lugares-info">
+                    <!-- La información detallada se generará con JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Cultura -->
+            <section id="cultura" class="section-cultura">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Cultura</h2>
+                <p class="section-subtitle">Un viaje a través de las tradiciones, costumbres y expresiones artísticas que definen la rica identidad cultural de Bonda.</p>
+            </div>
+            
+            <!-- Carrusel principal -->
+            <div class="cultura-carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="img/Artesania.jpeg" alt="Artesanías de Bonda" class="carousel-image">
+                        <div class="carousel-content">
+                            <h2>Artesanías Tradicionales</h2>
+                            <p>Las manos hábiles de los artesanos de Bonda transforman fibras naturales, arcilla y telas en obras de arte que cuentan historias ancestrales. Cada pieza refleja técnicas transmitidas por generaciones y representa un vínculo vivo con nuestras raíces indígenas y coloniales.</p>
+                            <p>Los diseños incorporan símbolos que hablan de la cosmovisión local, la relación con la naturaleza y los ciclos agrícolas que han marcado la vida en esta región por siglos.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="img/musuca_dansa.jpg" alt="Música y danza de Bonda" class="carousel-image">
+                        <div class="carousel-content">
+                            <h2>Música y Danza</h2>
+                            <p>Los ritmos caribeños como la cumbia y el vallenato se fusionan con influencias indígenas para crear expresiones musicales únicas de Bonda. Estas tradiciones sonoras no solo entretienen, sino que mantienen viva la memoria colectiva de nuestra comunidad.</p>
+                            <p>Durante las festividades, la música y la danza se convierten en el lenguaje universal que une a locales y visitantes en una celebración de vida y cultura.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="img/festividad-tradicional.jpg" alt="Festividades de Bonda" class="carousel-image">
+                        <div class="carousel-content">
+                            <h2>Festividades Tradicionales</h2>
+                            <p>SANTA ANA, Patrona de Bonda y en honor a ella se le rinde homenaje el día 26 de Julio, es venerada por todos los bonderos. El corregimiento de Bonda en honor a su patrona fue fundado el 26 de Julio de 1527.</p>
+                            <p>El 26 de julio se celebra el día de Santa Ana con misa y una procesión que recorre el sector de Bonda Centro el cual es acompañada por devotos, mujeres que le piden por un buen embarazo, un buen parto y otras que no han podido y quieren quedar en embarazo, además se realizan juegos, concursos, muestras folclóricas, la procesión y misa de devotos, y la quemada del castillo.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="img/tradicion-oral.jpg" alt="Tradición oral de Bonda" class="carousel-image">
+                        <div class="carousel-content">
+                            <h2>Tradición Oral</h2>
+                            <p>Las leyendas, mitos y cuentos populares forman parte esencial del patrimonio inmaterial de Bonda. Los ancianos del pueblo son los guardianes de estas historias que explican el origen del mundo, las fuerzas de la naturaleza y las normas sociales.</p>
+                            <p>A través de la palabra hablada, se preserva la sabiduría ancestral y se fortalece el sentido de pertenencia e identidad cultural de los habitantes.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="carousel-indicators">
+                    <span class="indicator active" data-index="0"></span>
+                    <span class="indicator" data-index="1"></span>
+                    <span class="indicator" data-index="2"></span>
+                    <span class="indicator" data-index="3"></span>
+                </div>
+                
+                <div class="carousel-controls">
+                    <button class="carousel-button" id="prevBtn">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="carousel-button" id="nextBtn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Tarjetas de cultura -->
+            <div class="culture-cards">
+                <div class="culture-card">
+                    <div class="card-image">
+                        <img src="img/Artesania.jpeg" alt="Artesanías de Bonda">
+                        <div class="card-icon">
+                            <i class="fas fa-paint-brush"></i>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Artesanías</h3>
+                        <p>Trabajos en fibras naturales, cerámica y tejidos que reflejan la herencia indígena y colonial, reconocidos por su calidad y autenticidad.</p>
+                    </div>
+                </div>
+                
+                <div class="culture-card">
+                    <div class="card-image">
+                        <img src="img/musuca_dansa.jpg" alt="Música de Bonda">
+                        <div class="card-icon">
+                            <i class="fas fa-music"></i>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Música y Danza</h3>
+                        <p>La cumbia, el vallenato y otras expresiones musicales caribeñas forman parte fundamental de la identidad cultural y las celebraciones locales.</p>
+                    </div>
+                </div>
+                
+                <div class="culture-card">
+                    <div class="card-image">
+                        <img src="img/festividad-tradicional.jpg" alt="Festividades de Bonda">
+                        <div class="card-icon">
+                            <i class="fas fa-church"></i>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Festividades</h3>
+                        <p>SANTA ANA, Patrona de Bonda y en honor a ella se le rinde homenaje el día 26 de Julio, es venerada por todos los bonderos. El corregimiento de Bonda en honor a su patrona fue fundado el 26 de Julio de 1527.</p>
+                    </div>
+                </div>
+                
+                <div class="culture-card">
+                    <div class="card-image">
+                        <img src="img/tradicion-oral.jpg" alt="Tradición oral de Bonda">
+                        <div class="card-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Tradición Oral</h3>
+                        <p>Leyendas y mitos transmitidos de generación en generación mantienen viva la memoria colectiva y fortalecen la identidad cultural de Bonda.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sección de historia cultural -->
+            <div class="cultura-historia">
+                <div class="historia-image">
+                    <img src="img/cultura.jpg" alt="Legado cultural de Bonda">
+                </div>
+                <div class="historia-content">
+                    <h2>Un Legado Cultural Vivo</h2>
+                    <p>La cultura de Bonda tiene una rica mezcla de tradiciones indígenas, coloniales y caribeñas que se manifiestan en su vida cotidiana. Caracterizada por su autenticidad y diversidad, representa un patrimonio vivo que continúa evolucionando mientras mantiene sus raíces históricas.</p>
+                    <p>Los artesanos locales mantienen vivas técnicas ancestrales en la elaboración de tejidos, cerámicas y otros objetos decorativos y utilitarios. Cada pieza cuenta una historia, transmitiendo conocimientos que han pasado de generación en generación.</p>
+                    <p>La música y la danza son expresiones fundamentales de la identidad cultural de Bonda, donde los ritmos caribeños se mezclan con influencias indígenas y africanas. Estas manifestaciones artísticas no solo entretienen, sino que también educan y mantienen viva la memoria colectiva de esta comunidad.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+        <!-- Gastronomía -->
+        <section id="gastronomia" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Gastronomía</h2>
+                    <div class="section-divider"></div>
+                </div>
+                
+                <div class="gastronomy-intro">
+                    <p>La gastronomía de Bonda refleja la riqueza natural de la región y combina sabores indígenas, españoles y africanos para crear una experiencia culinaria única.</p>
+                </div>
+                
+                <div class="food-carousel" id="food-carousel">
+                    <!-- El carrusel de gastronomía se generará con JavaScript -->
+                </div>
+            </div>
+        </section>
+
+       <!-- Himno -->
+<section id="himno" class="section section-alt">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Himno de Bonda</h2>
+            <div class="section-divider"></div>
+            <p class="section-subtitle">Símbolo de nuestra identidad y orgullo</p>
+        </div>
+        
+        <div class="himno-container">
+            <div class="himno-content">
+                <div class="himno-card">
+                    <div class="himno-header">
+                        <i class="fas fa-music himno-icon"></i>
+                        <h3>Himno de Bonda</h3>
+                    </div>
+                    <div class="himno-body">
+                        <div id="himno-lyrics" class="himno-lyrics">
+                            <!-- El contenido del himno se cargará dinámicamente con JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="himno-visual">
+               
+                <div class="himno-info">
+                    <div class="himno-fact">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Adoptado en 1985</span>
+                    </div>
+                    <div class="himno-fact">
+                        <i class="fas fa-pen-fancy"></i>
+                        <span>Compositor: Andrés Rafael Melo Santrich</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+        <!-- Juegos -->
+        <section id="juegos" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Juegos Interactivos</h2>
+                    <div class="section-divider"></div>
+                </div>
+                
+                <div class="games-intro">
+                    <p>Diviértete mientras aprendes más sobre Bonda con estos juegos interactivos.</p>
+                </div>
+                
+                <div class="games-container">
+                    <div class="game-card" id="sopaLetras">
+                        <div class="game-icon">
+                            <i class="fas fa-font"></i>
+                        </div>
+                        <h3>Sopa de Letras</h3>
+                        <p>Encuentra palabras relacionadas con Bonda y su historia</p>
+                        <a href="sopa_letra.html">Jugar</a>
+                    </div>
+                    <div class="game-card" id="cuestionario">
+                        <div class="game-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <h3>Cuestionario</h3>
+                        <p>Pon a prueba tus conocimientos sobre Bonda</p>
+                        <a href="cuestionario.html">Jugar</a>
+                    </div>
+                </div>
+                
+                <div id="game-container" class="game-container hidden">
+                    <div class="game-header">
+                        <h3 id="game-title">Juego</h3>
+                        <button id="closeGame" class="close-btn"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div id="game-content" class="game-content">
+                        <!-- El contenido del juego se generará con JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="img/escudo.jpeg" alt="Logo Bonda">
+                    <h3>Bonda, Santa Marta</h3>
+            
+                </div>
+                <div class="footer-links">
+                    <h4>Enlaces Rápidos</h4>
+                    <ul>
+                        <li><a href="#inicio">Inicio</a></li>
+                        <li><a href="#historia">Historia</a></li>
+                        <li><a href="#lugares">Lugares</a></li>
+                        <li><a href="#cultura">Cultura</a></li>
+                        <li><a href="#gastronomia">Gastronomía</a></li>
+                        <li><a href="#himno">Himno</a></li>
+                        <li><a href="#juegos">Juegos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contacto</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> Bonda- Donana</p>
+                    <p><i class="fas fa-envelope"></i> marta2003archilaf@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> (+57) 3202812108</p>
+                </div>
+                <div class="footer-social">
+                    <h4>Investigadoras</h4>
+                    <div class="social-icons">
+                        <ul>
+                            <li><i class="fas fa-user"></i> Martha Liliana Archila Fonseca</li>
+                            <li><i class="fas fa-user"></i> Yureydis Gómez lascarro </li>
+                            <li><i class="fas fa-user"></i> Yeimi Carolina cadena Durán</li>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 - Todos los derechos reservados Alvaro Ospino| Bonda, Santa Marta</p>
+            </div>
+        </div>
+    </footer>
+
+   
+</body>
+ <script src="script.js"></script>
+</html>

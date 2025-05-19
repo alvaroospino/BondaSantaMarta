@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Quién Quiere Ser Millonario? - Historia y Cultura de Bonda</title>
+    <style>
+        :root {
+            --main-bg-color: #0d1b3e;
+            --highlight-color: #1a3b8f;
+            --text-color: #ffffff;
+            --button-color: #214bc2;
+            --button-hover: #3964dd;
+            --option-color: #214bc2;
+            --option-hover: #3964dd;
+            --option-selected: #e7af13;
+            --option-correct: #37b24d;
+            --option-incorrect: #e03131;
+            --money-active: #f0c61c;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--main-bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .game-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: var(--money-active);
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .game-area {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex-grow: 1;
+        }
+
+        .question-container {
+            background-color: var(--highlight-color);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .question {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .options-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .option {
+            background-color: var(--option-color);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .option:hover {
+            background-color: var(--option-hover);
+            transform: translateY(-2px);
+        }
+
+        .option.selected {
+            background-color: var(--option-selected);
+            border-color: #ffffff;
+        }
+
+        .option.correct {
+            background-color: var(--option-correct);
+            border-color: #ffffff;
+        }
+
+        .option.incorrect {
+            background-color: var(--option-incorrect);
+            border-color: #ffffff;
+        }
+
+        .option-letter {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            text-align: center;
+            line-height: 30px;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+
+        .prize-info {
+            background-color: var(--highlight-color);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .current-prize {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .next-prize {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .money-item {
+            padding: 8px 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .money-item.active {
+            background-color: var(--money-active);
+            color: #000;
+            font-weight: bold;
+        }
+
+        .money-item.milestone {
+            color: var(--money-active);
+            font-weight: bold;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: var(--button-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: var(--button-hover);
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        #game-result {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .game-over-container {
+            text-align: center;
+            display: none;
+        }
+
+        .game-over-container h2 {
+            color: var(--money-active);
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .game-over-container p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+        }
+
+        /* Estilos para la pantalla de inicio del juego "¿Quién Quiere Ser Millonario?" */
+
+.start-screen {
+    background: linear-gradient(135deg, #000428, #004e92);
+    color: white;
+    border-radius: 15px;
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(0, 191, 255, 0.5);
+    position: relative;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.logo {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(90deg, #f0c419, #f9a825, #f0c419);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    font-family: 'Impact', sans-serif;
+    letter-spacing: 2px;
+}
+
+.start-screen h1 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: #4fc3f7;
+    text-shadow: 0 0 5px rgba(79, 195, 247, 0.5);
+}
+
+.start-screen p {
+    margin-bottom: 1.2rem;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.start-screen ul {
+    background-color: rgba(0, 119, 182, 0.3);
+    padding: 1rem;
+    border-radius: 10px;
+    margin: 1.5rem auto;
+    border: 1px solid rgba(79, 195, 247, 0.5);
+    max-width: 400px;
+    list-style-position: inside;
+}
+
+.start-screen li {
+    margin: 0.5rem 0;
+    text-align: left;
+}
+
+.start-screen li::marker {
+    color: #ffeb3b;
+}
+
+.start-button {
+    background: linear-gradient(90deg, #f0c419, #f9a825);
+    color: #000428;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-top: 1.5rem;
+    margin-left: 38px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    letter-spacing: 1px;
+}
+
+.start-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+}
+
+/* Estilos para los comodines */
+.start-screen strong {
+    color: #ffeb3b;
+}
+
+
+        .logo {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: var(--money-active);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .lifelines {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .lifeline {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--highlight-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lifeline:hover:not(.used) {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .lifeline.used {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .lives-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .life {
+            font-size: 1.5rem;
+            color: #e03131;
+            transition: all 0.3s ease;
+        }
+
+        .life.lost {
+            opacity: 0.3;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .question {
+                font-size: 1.1rem;
+            }
+
+            .option {
+                padding: 10px;
+            }
+
+            .options-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .explanation {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            display: none;
+        }
+
+        .timer-container {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            margin: 0 auto 20px;
+        }
+
+        .timer-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(var(--option-color) 0%, transparent 0%);
+            transition: background 1s linear;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .timer-text {
+            font-size: 2rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        .timer-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: var(--main-bg-color);
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .info-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--highlight-color);
+            border-radius: 10px;
+            padding: 10px 15px;
+            margin-bottom: 15px;
+        }
+
+        .question-number {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="start-screen" id="start-screen">
+        <div class="logo">¿Quién Quiere Ser Millonario?</div>
+        <h1>Historia y Cultura de Bonda</h1>
+        <p>Pon a prueba tus conocimientos sobre la historia, tradiciones y cultura de Bonda, Santa Marta. Responde correctamente las 21 preguntas para convertirte en el ganador del juego.</p>
+        <p>Tienes <strong>3 vidas</strong> para completar el juego. Si respondes incorrectamente, perderás una vida.</p>
+        <p>También tendrás tres comodines para ayudarte durante el juego:</p>
+        <ul style="text-align: left; display: inline-block;">
+            <li>50:50 - Elimina dos respuestas incorrectas</li>
+            <li>👥 - Pregunta al público (simula una votación)</li>
+            <li>⏱️ - Más tiempo (te da 45 segundos adicionales)</li>
+        </ul>
+        <button class="start-button" id="start-button">COMENZAR JUEGO</button>
+    </div>
+
+    <div class="game-container hidden" id="game-container">
+        <header>
+            <h1>¿Quién Quiere Ser Millonario? - Bonda</h1>
+        </header>
+
+        <div class="lives-container" id="lives-container">
+            <div class="life">❤️</div>
+            <div class="life">❤️</div>
+            <div class="life">❤️</div>
+        </div>
+
+        <div class="info-bar">
+            <div class="question-number" id="question-number">Pregunta 1 de 21</div>
+            <div id="current-level">Nivel 1</div>
+        </div>
+
+        <div class="prize-info" id="prize-info">
+            <div>
+                <div class="current-prize">Premio actual: $<span id="current-prize">0</span></div>
+                <div class="next-prize">Siguiente: $<span id="next-prize">100</span></div>
+            </div>
+        </div>
+
+        <div class="lifelines">
+            <div class="lifeline" id="fifty-fifty" title="50:50 - Elimina dos respuestas incorrectas">50:50</div>
+            <div class="lifeline" id="ask-audience" title="Pregunta al público">👥</div>
+            <div class="lifeline" id="more-time" title="Más tiempo (+45 segundos)">⏱️</div>
+        </div>
+
+        <div class="timer-container" id="timer-container">
+            <div class="timer-circle" id="timer-circle">
+                <div class="timer-text" id="timer-text">45</div>
+            </div>
+            <div class="timer-bg"></div>
+        </div>
+
+        <div class="game-area">
+            <div class="question-container">
+                <div class="question" id="question">¿Pregunta aparecerá aquí?</div>
+                <div class="options-container" id="options-container">
+                    <!-- Options will be added here dynamically -->
+                </div>
+                <div class="explanation" id="explanation"></div>
+            </div>
+            <div class="controls">
+                <button id="confirm-btn" disabled>Confirmar Respuesta</button>
+                <button id="next-btn" disabled>Siguiente Pregunta</button>
+            </div>
+            <div id="game-result"></div>
+        </div>
+    </div>
+
+    <div class="game-over-container" id="game-over-container">
+        <h2 id="game-over-title">¡Juego Terminado!</h2>
+        <p id="game-over-message">Has ganado: $0</p>
+        <button id="play-again-btn" class="start-button">Jugar de Nuevo</button>
+    </div>
+
+    <script>
+        // Questions data
+        const questions = [
+            {
+                question: "¿Cuál es el nombre del monolito con jeroglíficos en bajo relieve, considerado un ícono de la cultura Tayrona en Bonda?",
+                options: ["Piedra del Sol", "Piedra Donama", "Piedra de Bondigua", "Piedra de los Ancestros"],
+                correctAnswer: 1,
+                explanation: "La Piedra Donama es un monolito de aproximadamente 2.5 metros de altura con jeroglíficos en bajo relieve, tallados por los Tayrona."
+            },
+            {
+                question: "¿Quién fue el cacique conocido por su resistencia contra los españoles y que fue ejecutado en la Bahía de Chengue?",
+                options: ["Cacique Coendo", "Cacique Xebo o Jebo", "Cacique Gamita", "Cacique Yebro"],
+                correctAnswer: 1,
+                explanation: "Xebo fue un valiente guerrero y símbolo de la resistencia indígena durante la conquista. Fue capturado y ejecutado por los españoles en la Bahía de Chengue."
+            },
+            {
+                question: "¿En qué año se considera oficialmente fundada la población de Bonda?",
+                options: ["1525", "1529", "1534", "1540"],
+                correctAnswer: 2,
+                explanation: "La fundación oficial de Bonda se registra en el año 1534, tras la conquista y sometimiento de la población indígena por parte de los españoles."
+            },
+            {
+                question: "¿Cuál es el nombre de la iglesia considerada una de las capillas más antiguas de Latinoamérica, ubicada en Bonda?",
+                options: ["Iglesia de San Pedro", "Iglesia de Santa Ana", "Iglesia de San Juan", "Iglesia de la Inmaculada Concepción"],
+                correctAnswer: 1,
+                explanation: "La Iglesia de Santa Ana, también conocida como San Pablo de Bonda, comenzó a construirse en 1534 y ha sido remodelada en varias ocasiones."
+            },
+            {
+                question: "¿Qué elemento natural de Bonda es conocido por sus aguas frías y cristalinas, siendo un atractivo turístico?",
+                options: ["Lago de Bonda", "Cascada de Bonda", "Laguna de Bondigua", "Manantial de Donama"],
+                correctAnswer: 1,
+                explanation: "La Cascada de Bonda es un sitio turístico popular por sus aguas frías y cristalinas, ideales para paseos familiares."
+            },
+            {
+                question: "¿Qué actividad realizaban los indígenas de Bonda durante la luna nueva?",
+                options: ["Caza de animales", "Pagamentos y ritos a sus deidades", "Construcción de viviendas", "Comercio con otras tribus"],
+                correctAnswer: 1,
+                explanation: "Los indígenas realizaban ofrecimientos y ritos a sus deidades durante la luna nueva, llevando a cabo grandes fiestas."
+            },
+            {
+                question: "¿Qué instrumento musical era parte de las fanfarrias militares traídas por los conquistadores a Bonda?",
+                options: ["Gaita", "Tiple", "Chirimía", "Marimba"],
+                correctAnswer: 2,
+                explanation: "Los conquistadores trajeron instrumentos como chirimías, trompetas y sacabuches, que sorprendieron a los indígenas de Bonda."
+            },
+            {
+                question: "¿Qué río atraviesa Bonda y es conocido por su importancia ecológica y cultural?",
+                options: ["Río Magdalena", "Río Manzanares", "Río Bonda", "Río Donama"],
+                correctAnswer: 2,
+                explanation: "El Río Bonda, también conocido como Río Manzanares en su cauce por Bonda, es un sitio de veraneo y tiene importancia ecológica y cultural."
+            },
+            {
+                question: "¿Qué personaje de Bonda fue conocido por su programa radial \"Bonito Amanecer, Alegre Despertar\"?",
+                options: ["José Vicente \"Chente\" Pacheco Reyes", "Joaquín De Mier", "Yuri Leveratto", "Fray Tomás Ortiz"],
+                correctAnswer: 0,
+                explanation: "\"Chente\" Pacheco fue un locutor que despertaba a Santa Marta con música y noticias en su programa radial."
+            },
+            {
+                question: "¿Qué elemento arquitectónico de la Iglesia de Santa Ana fue construido por mujeres alfareras de Bonda?",
+                options: ["El altar mayor", "Las torres", "El techo", "Las puertas"],
+                correctAnswer: 1,
+                explanation: "Las torres de la iglesia fueron construidas por mujeres alfareras de la localidad, aunque fueron removidas en una remodelación posterior."
+            },
+            {
+                question: "¿Qué elemento natural es considerado un símbolo espiritual por las comunidades indígenas de Bonda?",
+                options: ["El mar Caribe", "La Sierra Nevada", "La Piedra Donama", "El Sol"],
+                correctAnswer: 2,
+                explanation: "La Piedra Donama es considerada un símbolo espiritual importante para las comunidades indígenas de la región."
+            },
+            {
+                question: "¿Qué comunidad indígena mantiene vivas sus tradiciones en la vereda El Boquerón, cerca de Bonda?",
+                options: ["Wayuu", "Embera", "Kogui", "Zenú"],
+                correctAnswer: 2,
+                explanation: "En la vereda El Boquerón, se ha establecido un pequeño pueblo de indígenas Kogui que conservan toda la tradición y cultura ancestral."
+            },
+            {
+                question: "¿Qué actividad económica es tradicional en la región de Bonda?",
+                options: ["Pesca industrial", "Minería de oro", "Agricultura y ecoturismo", "Industria textil"],
+                correctAnswer: 2,
+                explanation: "Bonda es reconocida por su vocación agrícola y, en los últimos años, ha desarrollado un importante sector ecoturístico, aprovechando su riqueza natural y cultura."
+            },
+            {
+                question: "¿Qué río atraviesa el corregimiento de Bonda y es conocido por sus balnearios naturales?",
+                options: ["Río Magdalena", "Río Manzanares", "Río Cauca", "Río Amazonas"],
+                correctAnswer: 1,
+                explanation: "El Río Manzanares nace en la Sierra Nevada de Santa Marta y atraviesa Bonda, ofreciendo balnearios naturales como la Cascada de Bonda."
+            },
+            {
+                question: "¿Qué caciques lideraron la resistencia indígena contra los españoles en Bonda?",
+                options: ["Yebro y Coendo", "Atahualpa y Tupac", "Moctezuma y Cuauhtémoc", "Tayrona y Kogui"],
+                correctAnswer: 0,
+                explanation: "Los caciques Yebro y Coendo lideraron a los indígenas de Bonda en la resistencia contra los invasores españoles, demostrando conocimientos en tácticas."
+            }
+           
+           
+        ];
+
+        // Money ladder values
+        const moneyLadder = [
+            100, 200, 300, 500, 1000,
+            2000, 4000, 8000, 16000, 32000,
+            64000, 125000, 250000, 500000, 1000000
+        ];
+
+        // Game variables
+        let currentQuestionIndex = 0;
+        let selectedOptionIndex = null;
+        let gameOver = false;
+        let earnedMoney = 0;
+        let timer;
+        let timeLeft = 45; // Aumentado a 45 segundos iniciales
+        let baseTime = 45; // Tiempo base para las preguntas
+        let bonusTimePerQuestion = 3; // Tiempo adicional que se va sumando conforme avanzas
+        let milestones = [4, 9, 14, 20]; // Question indices for safe points
+        let lives = 3; // Sistema de 3 vidas
+
+        // Lifelines
+        let lifelines = {
+            fiftyFifty: true,
+            askAudience: true,
+            moreTime: true
+        };
+
+        // DOM Elements
+        const startScreen = document.getElementById('start-screen');
+        const gameContainer = document.getElementById('game-container');
+        const gameOverContainer = document.getElementById('game-over-container');
+        const questionElement = document.getElementById('question');
+        const optionsContainer = document.getElementById('options-container');
+        const confirmBtn = document.getElementById('confirm-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const gameResult = document.getElementById('game-result');
+        const explanationElement = document.getElementById('explanation');
+        const gameOverTitle = document.getElementById('game-over-title');
+        const gameOverMessage = document.getElementById('game-over-message');
+        const playAgainBtn = document.getElementById('play-again-btn');
+        const startButton = document.getElementById('start-button');
+        const timerCircle = document.getElementById('timer-circle');
+        const timerText = document.getElementById('timer-text');
+        const livesContainer = document.getElementById('lives-container');
+        const questionNumberElement = document.getElementById('question-number');
+        const currentLevelElement = document.getElementById('current-level');
+        const currentPrizeElement = document.getElementById('current-prize');
+        const nextPrizeElement = document.getElementById('next-prize');
+        const prizeInfoElement = document.getElementById('prize-info');
+
+        // Lifeline elements
+        const fiftyFiftyBtn = document.getElementById('fifty-fifty');
+        const askAudienceBtn = document.getElementById('ask-audience');
+        const moreTimeBtn = document.getElementById('more-time');
+
+        // Event Listeners
+        startButton.addEventListener('click', startGame);
+        confirmBtn.addEventListener('click', confirmAnswer);
+        nextBtn.addEventListener('click', loadNextQuestion);
+        playAgainBtn.addEventListener('click', resetGame);
+
+        // Lifeline event listeners
+        fiftyFiftyBtn.addEventListener('click', useFiftyFifty);
+        askAudienceBtn.addEventListener('click', useAskAudience);
+        moreTimeBtn.addEventListener('click', useMoreTime);
+
+        // Game initialization functions
+        function startGame() {
+            startScreen.classList.add('hidden');
+            gameContainer.classList.remove('hidden');
+            gameOverContainer.style.display = 'none';
+            
+            resetGame();
+            loadQuestion(0);
+            updatePrizeInfo();
+            startTimer();
+        }
+
+        function resetGame() {
+            currentQuestionIndex = 0;
+            selectedOptionIndex = null;
+            gameOver = false;
+            earnedMoney = 0;
+            lives = 3; // Reiniciar vidas
+            
+            // Reset lifelines
+            lifelines = {
+                fiftyFifty: true,
+                askAudience: true,
+                moreTime: true
+            };
+            
+            fiftyFiftyBtn.classList.remove('used');
+            askAudienceBtn.classList.remove('used');
+            moreTimeBtn.classList.remove('used');
+            
+            // Reset lives display
+            updateLivesDisplay();
+            
+            gameContainer.classList.remove('hidden');
+            gameOverContainer.style.display = 'none';
+            
+            loadQuestion(0);
+            updatePrizeInfo();
+            
+            clearInterval(timer);
+            timeLeft = 45;
+            updateTimerDisplay();
+            startTimer();
+        }
+
+        // Update lives display
+        function updateLivesDisplay() {
+            const lifeElements = livesContainer.querySelectorAll('.life');
+            lifeElements.forEach((life, index) => {
+                if (index < lives) {
+                    life.classList.remove('lost');
+                } else {
+                    life.classList.add('lost');
+                }
+            });
+        }
+
+        // Update prize information
+        function updatePrizeInfo() {
+            currentPrizeElement.textContent = earnedMoney.toLocaleString();
+            
+            if (currentQuestionIndex < moneyLadder.length) {
+                nextPrizeElement.textContent = moneyLadder[currentQuestionIndex].toLocaleString();
+                } else {
+                nextPrizeElement.textContent = "¡GRAN PREMIO!";
+            }
+            
+            currentLevelElement.textContent = `Nivel ${currentQuestionIndex + 1}`;
+        }
+
+        // Question loading and display functions
+        function loadQuestion(index) {
+            // Reset selected option
+            selectedOptionIndex = null;
+            
+            // Update question number
+            questionNumberElement.textContent = `Pregunta ${index + 1} de ${questions.length}`;
+            
+            // Calculate and set timer for this question
+            let timeForThisQuestion = baseTime + (bonusTimePerQuestion * index);
+            timeLeft = timeForThisQuestion;
+            updateTimerDisplay();
+            
+            const question = questions[index];
+            questionElement.textContent = question.question;
+            
+            // Clear options
+            optionsContainer.innerHTML = '';
+            
+            // Add options
+            const optionLetters = ['A', 'B', 'C', 'D'];
+            question.options.forEach((option, i) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.dataset.index = i;
+                
+                const optionLetter = document.createElement('span');
+                optionLetter.className = 'option-letter';
+                optionLetter.textContent = optionLetters[i];
+                
+                const optionText = document.createElement('span');
+                optionText.textContent = option;
+                
+                optionDiv.appendChild(optionLetter);
+                optionDiv.appendChild(optionText);
+                
+                optionDiv.addEventListener('click', () => selectOption(i));
+                
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            // Reset buttons and explanation
+            confirmBtn.disabled = true;
+            nextBtn.disabled = true;
+            explanationElement.style.display = 'none';
+            explanationElement.textContent = '';
+            
+            // Reset any audience poll or 50:50 effects
+            const allOptions = optionsContainer.querySelectorAll('.option');
+            allOptions.forEach(option => {
+                option.style.display = 'flex';
+                const optionText = option.querySelector('span:nth-child(2)');
+                if (optionText.innerHTML.includes('%')) {
+                    optionText.textContent = question.options[option.dataset.index];
+                }
+            });
+        }
+
+        function selectOption(index) {
+            if (gameOver) return;
+            
+            // Clear previously selected option
+            const options = optionsContainer.querySelectorAll('.option');
+            options.forEach(option => option.classList.remove('selected'));
+            
+            // Select new option
+            options[index].classList.add('selected');
+            selectedOptionIndex = index;
+            
+            // Enable confirm button
+            confirmBtn.disabled = false;
+        }
+
+        function confirmAnswer() {
+            if (selectedOptionIndex === null) return;
+            
+            clearInterval(timer); // Stop the timer
+            
+            const question = questions[currentQuestionIndex];
+            const options = optionsContainer.querySelectorAll('.option');
+            
+            const isCorrect = selectedOptionIndex === question.correctAnswer;
+            
+            // Show correct/incorrect animations
+            if (isCorrect) {
+                options[selectedOptionIndex].classList.add('correct');
+                earnedMoney = moneyLadder[currentQuestionIndex];
+                updatePrizeInfo();
+            } else {
+                options[selectedOptionIndex].classList.add('incorrect');
+                options[question.correctAnswer].classList.add('correct');
+                
+                // Lose a life instead of ending the game immediately
+                lives--;
+                updateLivesDisplay();
+                
+                if (lives <= 0) {
+                    // Check if player reached a milestone
+                    earnedMoney = getGuaranteedMoney();
+                    endGame(false);
+                    return;
+                }
+            }
+            
+            // Show explanation
+            explanationElement.textContent = question.explanation;
+            explanationElement.style.display = 'block';
+            
+            // Enable next button or end game button
+            if (currentQuestionIndex === questions.length - 1) {
+                if (isCorrect) {
+                    endGame(true);
+                } else {
+                    nextBtn.textContent = "Ver Resultados";
+                    nextBtn.disabled = false;
+                }
+            } else {
+                nextBtn.disabled = false;
+            }
+            
+            confirmBtn.disabled = true;
+        }
+
+        function loadNextQuestion() {
+            if (currentQuestionIndex === questions.length - 1) {
+                endGame(earnedMoney === moneyLadder[moneyLadder.length - 1]);
+                return;
+            }
+            
+            currentQuestionIndex++;
+            loadQuestion(currentQuestionIndex);
+            startTimer();
+        }
+
+        function getGuaranteedMoney() {
+            // Find the highest milestone reached
+            for (let i = milestones.length - 1; i >= 0; i--) {
+                if (currentQuestionIndex > milestones[i]) {
+                    return moneyLadder[milestones[i]];
+                }
+            }
+            return 0;
+        }
+
+        function endGame(isWinner) {
+            gameOver = true;
+            gameContainer.classList.add('hidden');
+            gameOverContainer.style.display = 'block';
+            
+            if (isWinner && currentQuestionIndex === questions.length - 1) {
+                gameOverTitle.textContent = "¡FELICIDADES! ¡ERES MILLONARIO!";
+                gameOverMessage.textContent = `Has ganado el gran premio: $${earnedMoney.toLocaleString()}`;
+            } else if (lives <= 0) {
+                gameOverTitle.textContent = "¡Te has quedado sin vidas!";
+                gameOverMessage.textContent = `Te llevas: $${earnedMoney.toLocaleString()}`;
+            } else {
+                gameOverTitle.textContent = "Juego Terminado";
+                gameOverMessage.textContent = `Has ganado: $${earnedMoney.toLocaleString()}`;
+            }
+        }
+
+        // Timer functions
+        function startTimer() {
+            clearInterval(timer);
+            timer = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    // Time ran out, player loses a life
+                    lives--;
+                    updateLivesDisplay();
+                    
+                    if (lives <= 0) {
+                        earnedMoney = getGuaranteedMoney();
+                        endGame(false);
+                    } else {
+                        // Player still has lives, move to next question
+                        gameResult.textContent = "Se acabó el tiempo. Has perdido una vida.";
+                        setTimeout(() => {
+                            gameResult.textContent = "";
+                            if (currentQuestionIndex < questions.length - 1) {
+                                currentQuestionIndex++;
+                                loadQuestion(currentQuestionIndex);
+                                startTimer();
+                            } else {
+                                endGame(false);
+                            }
+                        }, 2000);
+                    }
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            timerText.textContent = timeLeft;
+            const percentage = (timeLeft / (baseTime + (bonusTimePerQuestion * currentQuestionIndex))) * 100;
+            timerCircle.style.background = `conic-gradient(var(--option-color) ${percentage}%, transparent ${percentage}%)`;
+        }
+
+        // Lifeline functions
+        function useFiftyFifty() {
+            if (!lifelines.fiftyFifty || gameOver) return;
+            
+            lifelines.fiftyFifty = false;
+            fiftyFiftyBtn.classList.add('used');
+            
+            const correctAnswerIndex = questions[currentQuestionIndex].correctAnswer;
+            const options = optionsContainer.querySelectorAll('.option');
+            
+            // Collect incorrect options indexes
+            let incorrectIndexes = [];
+            for (let i = 0; i < options.length; i++) {
+                if (i !== correctAnswerIndex) {
+                    incorrectIndexes.push(i);
+                }
+            }
+            
+            // Shuffle and remove 2 incorrect options
+            shuffleArray(incorrectIndexes);
+            incorrectIndexes = incorrectIndexes.slice(0, 2);
+            
+            // Hide the selected incorrect options
+            incorrectIndexes.forEach(index => {
+                options[index].style.display = 'none';
+            });
+            
+            // If the currently selected option was removed, clear selection
+            if (selectedOptionIndex !== null && incorrectIndexes.includes(selectedOptionIndex)) {
+                selectedOptionIndex = null;
+                confirmBtn.disabled = true;
+            }
+        }
+
+        function useAskAudience() {
+            if (!lifelines.askAudience || gameOver) return;
+            
+            lifelines.askAudience = false;
+            askAudienceBtn.classList.add('used');
+            
+            const correctAnswerIndex = questions[currentQuestionIndex].correctAnswer;
+            const options = optionsContainer.querySelectorAll('.option');
+            
+            // Generate audience vote percentages (biased towards correct answer)
+            let percentages = [];
+            const correctPercentage = Math.floor(Math.random() * 30) + 55; // 55-85% for correct answer
+            let remainingPercentage = 100 - correctPercentage;
+            
+            for (let i = 0; i < options.length; i++) {
+                if (i === correctAnswerIndex) {
+                    percentages[i] = correctPercentage;
+                } else {
+                    if (i === options.length - 1) {
+                        percentages[i] = remainingPercentage;
+                    } else {
+                        const randomPercent = Math.floor(Math.random() * remainingPercentage);
+                        percentages[i] = randomPercent;
+                        remainingPercentage -= randomPercent;
+                    }
+                }
+            }
+            
+            // Display the percentages
+            for (let i = 0; i < options.length; i++) {
+                const optionText = options[i].querySelector('span:nth-child(2)');
+                const originalText = optionText.textContent;
+                optionText.textContent = `${originalText} (${percentages[i]}%)`;
+            }
+        }
+
+        function useMoreTime() {
+            if (!lifelines.moreTime || gameOver) return;
+            
+            lifelines.moreTime = false;
+            moreTimeBtn.classList.add('used');
+            
+            // Add 45 seconds to the timer
+            timeLeft += 45;
+            updateTimerDisplay();
+        }
+
+        // Utility function to shuffle array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+            </script>
+</body>
+</html>

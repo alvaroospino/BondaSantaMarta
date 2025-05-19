@@ -1,0 +1,393 @@
+/* Animaciones avanzadas para la sección de Bonda */
+
+/* Estilos base para animaciones de scroll */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.animate-on-scroll.animated {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Retraso para elementos en secuencia */
+.delay-100 { transition-delay: 0.1s; }
+.delay-200 { transition-delay: 0.2s; }
+.delay-300 { transition-delay: 0.3s; }
+.delay-400 { transition-delay: 0.4s; }
+.delay-500 { transition-delay: 0.5s; }
+
+/* Animación de entrada desde la izquierda */
+.animate-from-left {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.animate-from-left.animated {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Animación de entrada desde la derecha */
+.animate-from-right {
+  opacity: 0;
+  transform: translateX(50px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.animate-from-right.animated {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Animación de zoom */
+.animate-zoom {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.animate-zoom.animated {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Animación para el divider */
+.section-divider {
+  width: 0;
+  transition: width 1.2s ease;
+}
+
+.section-divider.animated {
+  width: 80px;
+}
+
+/* Efectos especiales de tarjetas */
+.feature-card {
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  border: 2px solid transparent;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.feature-card:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(41,128,185,0.2) 50%, rgba(255,255,255,0) 100%);
+  transition: all 0.8s ease;
+  z-index: 1;
+}
+
+.feature-card:hover {
+  transform: translateY(-15px) scale(1.05);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  border: 2px solid #2980b9;
+}
+
+.feature-card:hover:before {
+  left: 100%;
+}
+
+.feature-card .icon {
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  position: relative;
+  z-index: 2;
+}
+
+.feature-card:hover .icon {
+  transform: scale(1.4) rotate(10deg);
+  color: #3498db;
+  text-shadow: 0 0 15px rgba(52, 152, 219, 0.7);
+  animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+  0% {
+    text-shadow: 0 0 5px rgba(52, 152, 219, 0.7);
+  }
+  100% {
+    text-shadow: 0 0 20px rgba(52, 152, 219, 0.9);
+  }
+}
+
+.feature-card h3 {
+  transition: all 0.4s ease;
+  position: relative;
+}
+
+.feature-card:hover h3 {
+  color: #3498db;
+  transform: scale(1.1);
+}
+
+.feature-card h3:after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: #3498db;
+  transition: all 0.4s ease;
+  transform: translateX(-50%);
+}
+
+.feature-card:hover h3:after {
+  width: 70%;
+}
+
+.feature-card p {
+  transition: all 0.4s ease;
+}
+
+.feature-card:hover p {
+  color: #333;
+}
+
+/* Animación de la primera tarjeta - Ubicación Privilegiada */
+.feature-card:nth-child(1):hover .icon {
+  animation: bounce 0.7s infinite alternate;
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0) scale(1.2);
+  }
+  100% {
+    transform: translateY(-10px) scale(1.4);
+  }
+}
+
+/* Animación de la segunda tarjeta - Rico Patrimonio */
+.feature-card:nth-child(2):hover .icon {
+  animation: rotate 2s infinite linear;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg) scale(1.2);
+  }
+  100% {
+    transform: rotate(360deg) scale(1.4);
+  }
+}
+
+/* Animación de la tercera tarjeta - Naturaleza Exuberante */
+.feature-card:nth-child(3):hover .icon {
+  animation: sway 2s infinite alternate;
+}
+
+@keyframes sway {
+  0% {
+    transform: rotate(-15deg) scale(1.2);
+  }
+  50% {
+    transform: rotate(0deg) scale(1.3);
+  }
+  100% {
+    transform: rotate(15deg) scale(1.4);
+  }
+}
+
+/* Animación de aparición 3D para tarjetas */
+.card-appear {
+  animation: cardAppear 1s forwards;
+  opacity: 0;
+  transform: rotateY(90deg) translateZ(50px);
+  transform-origin: left center;
+}
+
+@keyframes cardAppear {
+  0% {
+    opacity: 0;
+    transform: rotateY(90deg) translateZ(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateY(0) translateZ(0);
+  }
+}
+
+/* Animaciones para las características de la introducción */
+.intro-features .feature {
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+}
+
+.intro-features .feature:after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #3498db;
+  transition: width 0.4s ease;
+}
+
+.intro-features .feature:hover {
+  transform: translateY(-10px) scale(1.1);
+}
+
+.intro-features .feature:hover:after {
+  width: 100%;
+}
+
+.feature-icon {
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.intro-features .feature:hover .feature-icon {
+  transform: scale(1.5) rotate(15deg);
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Animación para la imagen principal */
+.main-image {
+  overflow: hidden;
+  position: relative;
+}
+
+.main-image:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(52, 152, 219, 0);
+  transition: background 0.5s ease;
+}
+
+.main-image img {
+  transition: transform 0.7s ease;
+}
+
+.main-image:hover img {
+  transform: scale(1.1) rotate(2deg);
+}
+
+.main-image:hover:after {
+  background: rgba(52, 152, 219, 0.1);
+}
+
+/* Animación para las decoraciones */
+.decoration-circle {
+  transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.intro-media:hover .decoration-circle {
+  transform: scale(1.2) rotate(30deg);
+  border-color: rgba(52, 152, 219, 0.4);
+}
+
+.decoration-line {
+  transition: all 0.7s ease;
+}
+
+.intro-media:hover .decoration-line {
+  width: 130%;
+  background-color: rgba(52, 152, 219, 0.4);
+}
+
+/* Animación del título de sección al hacer scroll */
+.section-title {
+  position: relative;
+  transition: all 0.5s ease;
+}
+
+.section-title:after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background-color: #3498db;
+  transition: width 0.8s ease;
+}
+
+.section-title.animated {
+  transform: scale(1.05);
+}
+
+.section-title.animated:after {
+  width: 100px;
+}
+
+/* Efectos adicionales para animaciones de tarjeta */
+.feature-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, transparent 70%, rgba(52, 152, 219, 0.1) 100%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 0;
+}
+
+.feature-card:hover::after {
+  opacity: 1;
+}
+
+/* Estilos para mejorar el efecto typewriter continuo */
+
+/* Contenedor del título con efecto typewriter */
+#bondaTitulo {
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
+}
+
+/* Cursor parpadeante */
+#bondaTitulo::after {
+  content: '';
+  position: absolute;
+  right: -2px;
+  top: 10%;
+  height: 80%;
+  width: 3px;
+  background-color: #3498db;
+  animation: blink-cursor 0.7s infinite;
+}
+
+/* Animación del cursor parpadeante */
+@keyframes blink-cursor {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+/* Aseguramos que el espacio del título permanezca constante */
+.intro-title {
+  min-height: 1.5em;
+  display: inline-block;
+  min-width: 280px; /* Ajustar según el ancho del título */
+}
+
+/* Efectos adicionales para mejorar la visibilidad del título */
+.intro-text {
+  position: relative;
+}
+
+/* Resaltar sutilmente la sección del título cuando está visible */
+.intro-text.title-visible {
+  animation: highlight-section 2s ease-in-out;
+}
+
+@keyframes highlight-section {
+  0%, 100% { background-color: transparent; }
+  50% { background-color: rgba(52, 152, 219, 0.05); }
+}
