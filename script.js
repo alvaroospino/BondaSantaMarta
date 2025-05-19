@@ -566,7 +566,7 @@ document.addEventListener('DOMContentLoaded', function() {
     autor.classList.add('autor');
     const autorText = document.createElement('span');
     autorText.classList.add('verso');
-    autorText.textContent = "Andrés Rafael Melo Santrich 01 04 1995.";
+    autorText.textContent = "Andrés Rafael Melo Santrich 01 04 1985.";
     autor.appendChild(autorText);
     himnoLyrics.appendChild(autor);
     
